@@ -48,12 +48,12 @@ const unordered_map<char, string> Sum::NUM_MAP = {
     {'0', "ling"},
 };
 
-//int main(int argc, const char * argv[]) {
-//    string input;
-//    std::cin >> input;
-//    Sum s;
-//    cout << s.sum(input);
-//   
-//    return 0;
-//}
+int main(int argc, const char * argv[]) {
+   string input;
+   std::cin >> input;
+   Sum s;
+   cout << s.sum(input);
+  
+   return 0;
+}
 
