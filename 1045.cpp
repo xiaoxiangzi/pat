@@ -10,6 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <algorithm>
 using namespace std;
 
 vector<int> findPrincipalElem(const vector<int>& nums) {
@@ -51,8 +52,34 @@ vector<int> findPrincipalElem(const vector<int>& nums) {
     return result;
 }
 
+vector<int> findPrincipalElemQuick(const vector<int>& nums) {
+    vector<int> result;
+    if (nums.size() == 1) {
+        result.push_back(nums[0]);
+        return result;
+    }
+    
+    vector<int> sortedNums(nums);
+    sort(sortedNums.begin(), sortedNums.end());
+    int max = 0;
+    for (int i = 0; i < nums.size(); i++) {
+        int a = nums[i];
+        int b = sortedNums[i];
+        // 如果原始数组遍历，元素是当前位置最大的一个，且与排序后的元素相等，那么就是主元
+        if (a >= max) {
+            max = a;
+            
+            if (a == b) {
+                result.push_back(a);
+            }
+        }
+    }
+    
+    return result;
+}
+
 int main(int argc, const char * argv[]) {
-        freopen("1045.txt", "r", stdin);
+//        freopen("1045.txt", "r", stdin);
     //    freopen("1045_1.txt", "r", stdin);
     int n;
     vector<int> nums;
@@ -62,7 +89,8 @@ int main(int argc, const char * argv[]) {
         cin >> nums[i];
     }
     
-    vector<int> result = findPrincipalElem(nums);
+//    vector<int> result = findPrincipalElem(nums);
+    vector<int> result = findPrincipalElemQuick(nums);
     cout << result.size() << endl;
     if (result.size() > 0) {
         cout << result[0];
