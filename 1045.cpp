@@ -52,7 +52,7 @@ vector<int> findPrincipalElem(const vector<int>& nums) {
 }
 
 int main(int argc, const char * argv[]) {
-    //    freopen("1045.txt", "r", stdin);
+        freopen("1045.txt", "r", stdin);
     //    freopen("1045_1.txt", "r", stdin);
     int n;
     vector<int> nums;
