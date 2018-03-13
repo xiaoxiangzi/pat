@@ -68,26 +68,26 @@ void printListMap(int headAddress, unordered_map<int, Node>& listMap) {
 //    printf("#############\n");
 }
 
-//int main(int argc, const char * argv[]) {
-////    freopen("1025.txt", "r", stdin);
-//    //        freopen("1067_1.txt", "r", stdin);
-//    
-//    string listHead;
-//    unordered_map<int, Node> listMap;
-//    int n = 0;
-//    int k = 0;
-//    cin >> listHead >> n >> k;
-//    int headAddress = 0;
-//    istringstream(listHead) >> headAddress;
-//    for (int i = 0; i < n; i++) {
-//        Node node;
-//        cin >> node.address >> node.data >> node.next;
-//        listMap.insert(pair<int, Node>(node.address, node));
-//    }
-////    printListMap(headAddress, listMap);
-//    headAddress = reverseList(headAddress, n, k, listMap);
+int main(int argc, const char * argv[]) {
+//    freopen("1025.txt", "r", stdin);
+   //        freopen("1067_1.txt", "r", stdin);
+   
+   string listHead;
+   unordered_map<int, Node> listMap;
+   int n = 0;
+   int k = 0;
+   cin >> listHead >> n >> k;
+   int headAddress = 0;
+   istringstream(listHead) >> headAddress;
+   for (int i = 0; i < n; i++) {
+       Node node;
+       cin >> node.address >> node.data >> node.next;
+       listMap.insert(pair<int, Node>(node.address, node));
+   }
 //    printListMap(headAddress, listMap);
-//    
-//    return 0;
-//}
+   headAddress = reverseList(headAddress, n, k, listMap);
+   printListMap(headAddress, listMap);
+   
+   return 0;
+}
 
