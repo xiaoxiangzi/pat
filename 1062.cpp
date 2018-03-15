@@ -63,26 +63,43 @@ bool hasCommonDivisor(int x, int y) {
 }
 
 void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
-    int x = a.m * b.m;
-    int y = a.n * b.m * k;
-    int z = b.n * a.m * k;
-    int minNum = min(y, z);
-    int maxNum = max(y, z);
+//    int x = a.m * b.m;
+//    int y = a.n * b.m * k;
+//    int z = b.n * a.m * k;
+//    int minNum = min(y, z);
+//    int maxNum = max(y, z);
+//    int count = 0;
+//
+//    for (int i = minNum + 1; i <= maxNum - 1;) {
+//        if (i % x != 0) {
+//            i = ceil(i * 1.0 / x) * x;
+//            continue;
+//        }
+//        int n = i / x;
+//        int m = k;
+//        i++;
+//        if (!hasCommonDivisor(n, m)) {
+//            if (count > 0) {
+//                cout << " ";
+//            }
+//            cout << n << "/" << m;
+//            count++;
+//        }
+//    }
+    double f1 = a.n * 1.0 / a.m;
+    double f2 = b.n * 1.0 / b.m;
+    double minF = min(f1, f2);
+    double maxF = max(f1, f2);
+    int minNum = minF * k;
+    int maxNum = maxF * k;
     int count = 0;
-    
-    for (int i = minNum + 1; i <= maxNum - 1;) {
-        if (i % x != 0) {
-            i = ceil(i * 1.0 / x) * x;
-            continue;
-        }
-        int n = i / x;
-        int m = k;
-        i++;
-        if (!hasCommonDivisor(n, m)) {
+    for (int i = minNum; i <= maxNum; i++) {
+        double fi = i * 1.0 / k;
+        if (fi > minF && fi < maxF && !hasCommonDivisor(i, k)) {
             if (count > 0) {
                 cout << " ";
             }
-            cout << n << "/" << m;
+            cout << i << "/" << k;
             count++;
         }
     }
