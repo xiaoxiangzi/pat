@@ -46,7 +46,7 @@ public:
             }
         }
     }
-
+    
     int n;
     int m;
 };
@@ -54,7 +54,7 @@ public:
 bool hasCommonDivisor(int x, int y) {
     int m = max(x, y);
     for (int i = 2; i <= m / 2; i++) {
-//        cout << "test:" << x << " "<< y << " "<< i << ", " << x % i << " " << y % i << endl;
+        //        cout << "test:" << x << " "<< y << " "<< i << ", " << x % i << " " << y % i << endl;
         if (x % i == 0 && y % i == 0) {
             return true;
         }
@@ -63,8 +63,6 @@ bool hasCommonDivisor(int x, int y) {
 }
 
 void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
-//    vector<Fraction> result;
-    
     int x = a.m * b.m;
     int y = a.n * b.m * k;
     int z = b.n * a.m * k;
@@ -72,14 +70,15 @@ void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
     int maxNum = max(y, z);
     int count = 0;
     
-    for (int i = minNum + 1; i < maxNum - 1; i++) {
+    for (int i = minNum + 1; i <= maxNum - 1;) {
         if (i % x != 0) {
+            i = ceil(i * 1.0 / x) * x;
             continue;
         }
         int n = i / x;
         int m = k;
+        i++;
         if (!hasCommonDivisor(n, m)) {
-//            result.push_back(Fraction(n, m))
             if (count > 0) {
                 cout << " ";
             }
@@ -87,12 +86,10 @@ void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
             count++;
         }
     }
-    
-//    return result;
 }
 
 int main(int argc, const char * argv[]) {
-    freopen("1062.txt", "r", stdin);
+//    freopen("1062.txt", "r", stdin);
     //    freopen("1045_1.txt", "r", stdin);
     
     int k = 0;
@@ -102,15 +99,8 @@ int main(int argc, const char * argv[]) {
     b.readFraction();
     cin >> k;
     
-//    vector<Fraction> result = findSimplestFractionList(a, b, k);
-//    for (int i = 0; i < result.size(); i++) {
-//        const Fraction& f = result[i];
-//        if (i > 0) {
-//            cout << " ";
-//        }
-//        cout << f.n << "/" << f.m;
-//    }
     findSimplestFractionList(a, b, k);
     
     return 0;
 }
+
