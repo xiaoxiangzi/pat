@@ -62,31 +62,37 @@ bool hasCommonDivisor(int x, int y) {
     return false;
 }
 
-vector<Fraction> findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
-    vector<Fraction> result;
+void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
+//    vector<Fraction> result;
     
     int x = a.m * b.m;
     int y = a.n * b.m * k;
     int z = b.n * a.m * k;
     int minNum = min(y, z);
     int maxNum = max(y, z);
+    int count = 0;
     
-    for (int i = 1; i < k; i++) {
-        int n = i * x;
-        if (n < minNum || n > maxNum) {
+    for (int i = minNum + 1; i < maxNum - 1; i++) {
+        if (i % x != 0) {
             continue;
         }
-        
-        if (!hasCommonDivisor(i, k)) {
-            result.push_back(Fraction(i, k));
+        int n = i / x;
+        int m = k;
+        if (!hasCommonDivisor(n, m)) {
+//            result.push_back(Fraction(n, m))
+            if (count > 0) {
+                cout << " ";
+            }
+            cout << n << "/" << m;
+            count++;
         }
     }
     
-    return result;
+//    return result;
 }
 
 int main(int argc, const char * argv[]) {
-//    freopen("1062.txt", "r", stdin);
+    freopen("1062.txt", "r", stdin);
     //    freopen("1045_1.txt", "r", stdin);
     
     int k = 0;
@@ -96,14 +102,15 @@ int main(int argc, const char * argv[]) {
     b.readFraction();
     cin >> k;
     
-    vector<Fraction> result = findSimplestFractionList(a, b, k);
-    for (int i = 0; i < result.size(); i++) {
-        const Fraction& f = result[i];
-        if (i > 0) {
-            cout << " ";
-        }
-        cout << f.n << "/" << f.m;
-    }
+//    vector<Fraction> result = findSimplestFractionList(a, b, k);
+//    for (int i = 0; i < result.size(); i++) {
+//        const Fraction& f = result[i];
+//        if (i > 0) {
+//            cout << " ";
+//        }
+//        cout << f.n << "/" << f.m;
+//    }
+    findSimplestFractionList(a, b, k);
     
     return 0;
 }
