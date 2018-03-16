@@ -17,7 +17,7 @@ using namespace std;
 class Fraction {
     
 public:
-    Fraction(int n, int m) : n(n), m(m) {}
+    Fraction(int64_t n, int64_t m) : n(n), m(m) {}
     
     void readFraction() {
         string input;
@@ -47,13 +47,13 @@ public:
         }
     }
     
-    int n;
-    int m;
+    int64_t n;
+    int64_t m;
 };
 
-bool hasCommonDivisor(int x, int y) {
-    int m = max(x, y);
-    for (int i = 2; i <= m / 2; i++) {
+bool hasCommonDivisor(int64_t x, int64_t y) {
+    int64_t m = max(x, y);
+    for (int64_t i = 2; i <= m / 2; i++) {
         //        cout << "test:" << x << " "<< y << " "<< i << ", " << x % i << " " << y % i << endl;
         if (x % i == 0 && y % i == 0) {
             return true;
@@ -62,30 +62,35 @@ bool hasCommonDivisor(int x, int y) {
     return false;
 }
 
-void findSimplestFractionList(const Fraction& a, const Fraction& b, int k) {
-//    int x = a.m * b.m;
-//    int y = a.n * b.m * k;
-//    int z = b.n * a.m * k;
-//    int minNum = min(y, z);
-//    int maxNum = max(y, z);
-//    int count = 0;
-//
-//    for (int i = minNum + 1; i <= maxNum - 1;) {
-//        if (i % x != 0) {
-//            i = ceil(i * 1.0 / x) * x;
-//            continue;
-//        }
-//        int n = i / x;
-//        int m = k;
-//        i++;
-//        if (!hasCommonDivisor(n, m)) {
-//            if (count > 0) {
-//                cout << " ";
-//            }
-//            cout << n << "/" << m;
-//            count++;
-//        }
-//    }
+// 通分方式要用int64_t才能解决溢出问题
+void findSimplestFractionList(const Fraction& a, const Fraction& b, int64_t k) {
+    int64_t x = a.m * b.m;
+    int64_t y = a.n * b.m * k;
+    int64_t z = b.n * a.m * k;
+    int64_t minNum = min(y, z);
+    int64_t maxNum = max(y, z);
+    int count = 0;
+
+    for (int64_t i = minNum + 1; i <= maxNum - 1;) {
+        if (i % x != 0) {
+            i = ceil(i * 1.0 / x) * x;
+            continue;
+        }
+        int64_t n = i / x;
+        int64_t m = k;
+        i++;
+        if (!hasCommonDivisor(n, m)) {
+            if (count > 0) {
+                cout << " ";
+            }
+            cout << n << "/" << m;
+            count++;
+        }
+    }
+}
+
+// 参考贤华的方式，比较简洁的处理方式
+void findSimplestFractionListRefXianhua(const Fraction& a, const Fraction& b, int k) {
     double f1 = a.n * 1.0 / a.m;
     double f2 = b.n * 1.0 / b.m;
     double minF = min(f1, f2);
@@ -116,7 +121,8 @@ int main(int argc, const char * argv[]) {
     b.readFraction();
     cin >> k;
     
-    findSimplestFractionList(a, b, k);
+//    findSimplestFractionList(a, b, k);
+    findSimplestFractionListRefXianhua(a, b, k);
     
     return 0;
 }
