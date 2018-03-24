@@ -30,7 +30,7 @@ public:
             } else if (c == ' ') {
                 if (n < 0 && m < 0) {
                     n = stoi(input);
-                    m = n * n;
+                    m = 1;
                     input.clear();
                 } else {
                     m = stoi(input);
