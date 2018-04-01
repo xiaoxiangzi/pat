@@ -65,44 +65,70 @@ void bfs(const unordered_map<int, Vertex>& graph, int n) {
     }
 }
 
-void dfs(const unordered_map<int, Vertex>& graph, int n) {
-    if (n == 0) {
-        vector<int> order;
-        printVector(order);
-        return;
+void dfsRecursiveInternal(const unordered_map<int, Vertex>& graph, int startId, unordered_map<int, bool>& visited, vector<int>& order) {
+    auto& v = graph.at(startId);
+    order.push_back(startId);
+    for (int i = 0; i < v.edges.size(); i++) {
+        int edgeId = v.edges[i];
+        if (visited.find(edgeId) != visited.end()) {
+            continue;
+        }
+        visited[edgeId] = true;
+        dfsRecursiveInternal(graph, edgeId, visited, order);
     }
-    
+}
+
+void dfsRecursive(const unordered_map<int, Vertex>& graph, int n) {
     unordered_map<int, bool> visited;
-    deque<int> scanQueue;
-    
     for (int i = 0; i < n; i++) {
         if (visited.find(i) != visited.end()) {
             continue;
         }
-        
         vector<int> order;
-        scanQueue.push_front(i);
-        while (!scanQueue.empty()) {
-            int curId = scanQueue.front();
-            scanQueue.pop_front();
-            visited[curId] = true;
-            order.push_back(curId);
-            auto& curVertex = graph.at(curId);
-            for (int j = (int) curVertex.edges.size() - 1; j >= 0; j--) {
-                int edgeVertexId = curVertex.edges[j];
-                
-                if (visited.find(edgeVertexId) != visited.end()) {
-                    continue;
-                }
-                
-                visited[edgeVertexId] = true;
-                scanQueue.push_front(edgeVertexId);
-            }
-        }
-        
+        visited[i] = true;
+        dfsRecursiveInternal(graph, i, visited, order);
         printVector(order);
     }
 }
+//
+//void dfs(const unordered_map<int, Vertex>& graph, int n) {
+//    if (n == 0) {
+//        vector<int> order;
+//        printVector(order);
+//        return;
+//    }
+//    
+//    unordered_map<int, bool> visited;
+//    deque<int> scanQueue;
+//    
+//    for (int i = 0; i < n; i++) {
+//        if (visited.find(i) != visited.end()) {
+//            continue;
+//        }
+//        
+//        vector<int> order;
+//        scanQueue.push_front(i);
+//        while (!scanQueue.empty()) {
+//            int curId = scanQueue.front();
+//            scanQueue.pop_front();
+//            visited[curId] = true;
+//            order.push_back(curId);
+//            auto& curVertex = graph.at(curId);
+//            for (int j = (int) curVertex.edges.size() - 1; j >= 0; j--) {
+//                int edgeVertexId = curVertex.edges[j];
+//                
+//                if (visited.find(edgeVertexId) != visited.end()) {
+//                    continue;
+//                }
+//                
+//                visited[edgeVertexId] = true;
+//                scanQueue.push_front(edgeVertexId);
+//            }
+//        }
+//        
+//        printVector(order);
+//    }
+//}
 
 int main(int argc, const char * argv[]) {
 //    freopen("PTA_7_1.txt", "r", stdin);
@@ -135,7 +161,8 @@ int main(int argc, const char * argv[]) {
 //        printVector(v.edges);
     }
     
-    dfs(graph, n);
+//    dfs(graph, n);
+    dfsRecursive(graph, n);
     bfs(graph, n);
     
     return 0;
