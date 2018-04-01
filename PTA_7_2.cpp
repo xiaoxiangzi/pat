@@ -63,34 +63,53 @@ vector<int> findLeaves(const unordered_map<int, Node>& nodes, int root) {
 }
 
 int main(int argc, const char * argv[]) {
-    freopen("PTA_7_2.txt", "r", stdin);
+//    freopen("PTA_7_2.txt", "r", stdin);
 
     int n = 0;
     cin >> n;
     int root = -1;
-    
+    unordered_map<int, bool> childrenMap;
     unordered_map<int, Node> nodes;
     for (int i = 0; i < n; i++) {
         Node node;
         node.id = i;
         node.left = readChild();
         node.right = readChild();
-        if (root < 0) {
-            root = node.id;
-        } else {
-            if (root == node.left || root == node.right) {
-                root = node.id;
-            }
+//        if (root < 0) {
+//            root = node.id;
+//        } else {
+//            if (root == node.left || root == node.right) {
+//                root = node.id;
+//            }
+//        }
+        if (node.left >= 0) {
+            childrenMap[node.left] = true;
+        }
+        
+        if (node.right >= 0) {
+            childrenMap[node.right] = true;
         }
         nodes[node.id] = node;
     }
+    
+    for (int i = 0; i < n; i++) {
+        if (childrenMap.find(i) == childrenMap.end()) {
+            root = i;
+            break;
+        }
+    }
+    
 //    cout << "root:" << root << endl;
     vector<int> leaves = findLeaves(nodes, root);
-    for (int i = 0; i < leaves.size(); i++) {
-        if (i > 0) {
-            cout << " ";
+    if (leaves.size() == 0) {
+        cout << endl;
+    } else {
+        for (int i = 0; i < leaves.size(); i++) {
+            if (i > 0) {
+                cout << " ";
+            }
+            cout << leaves[i];
         }
-        cout << leaves[i];
     }
 }
 
