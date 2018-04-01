@@ -19,7 +19,6 @@ struct Node {
     int id;
     int left;
     int right;
-    int depth;
 };
 
 int readChild() {
