@@ -27,18 +27,12 @@ void printVector(const vector<int>& v) {
     cout << " }" << endl;
 }
 
-bool checkIfExistedInDeque(deque<int>& q, int targetId) {
-    for (auto iter = q.begin(); iter != q.end(); iter++) {
-        int id = *iter;
-        if (id == targetId) {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
 void bfs(const unordered_map<int, Vertex>& graph, int n) {
+    if (n == 0) {
+        vector<int> order;
+        printVector(order);
+        return;
+    }
     unordered_map<int, bool> visited;
     deque<int> scanQueue;
     
@@ -49,10 +43,10 @@ void bfs(const unordered_map<int, Vertex>& graph, int n) {
         
         vector<int> order;
         scanQueue.push_front(i);
+        visited[i] = true;
         while (!scanQueue.empty()) {
             int curId = scanQueue.front();
             scanQueue.pop_front();
-            visited[curId] = true;
             order.push_back(curId);
             
             auto& curVertex = graph.at(curId);
@@ -61,9 +55,9 @@ void bfs(const unordered_map<int, Vertex>& graph, int n) {
                 if (visited.find(edgeVertexId) != visited.end()) {
                     continue;
                 }
-                if (!checkIfExistedInDeque(scanQueue, edgeVertexId)) {
-                    scanQueue.push_back(edgeVertexId);
-                }
+                
+                visited[edgeVertexId] = true;
+                scanQueue.push_back(edgeVertexId);
             }
             
         }
@@ -72,6 +66,12 @@ void bfs(const unordered_map<int, Vertex>& graph, int n) {
 }
 
 void dfs(const unordered_map<int, Vertex>& graph, int n) {
+    if (n == 0) {
+        vector<int> order;
+        printVector(order);
+        return;
+    }
+    
     unordered_map<int, bool> visited;
     deque<int> scanQueue;
     
@@ -94,9 +94,9 @@ void dfs(const unordered_map<int, Vertex>& graph, int n) {
                 if (visited.find(edgeVertexId) != visited.end()) {
                     continue;
                 }
-                if (!checkIfExistedInDeque(scanQueue, edgeVertexId)) {
-                    scanQueue.push_front(edgeVertexId);
-                }
+                
+                visited[edgeVertexId] = true;
+                scanQueue.push_front(edgeVertexId);
             }
         }
         
