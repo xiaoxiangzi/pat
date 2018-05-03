@@ -14,7 +14,7 @@ using namespace std;
 
 struct Vertex {
     int id;
-    unordered_map<int, bool> edges;
+    vector<int> edges;
 };
 
 class Graph {
@@ -33,13 +33,14 @@ public:
             cin >> v1Id >> v2Id;
             auto& v1 = _vertexes.at(v1Id);
             auto& v2 = _vertexes.at(v2Id);
-            v1.edges[v2Id] = true;
-            v2.edges[v1Id] = true;
+            v1.edges.push_back(v2Id);
+            v2.edges.push_back(v1Id);
         }
+        _totalEdgeNum = m;
     }
     
-    bool canConquer(const unordered_map<int, bool>& cities) {
-        if (!cities.empty()) {
+    bool canConquer(const vector<int>& cities) {
+        if (_vertexes.empty()) {
             return true;
         }
         
@@ -47,42 +48,27 @@ public:
             return true;
         }
         
-        bool can = true;
-        for (auto iter = _vertexes.begin(); iter != _vertexes.end(); iter++) {
-            auto& v = iter->second;
-            if (cities.find(v.id) == cities.end()) {
-                if (removeEdgesOfCities(v, cities)) {
-                    can = false;
-                    break;
+        int delEdges = 0;
+        unordered_map<int, bool> checkedFlags;
+        for (auto iter = cities.begin(); iter != cities.end(); iter++) {
+            int vId = *iter;
+            if (checkedFlags.find(vId) == checkedFlags.end()) {
+                auto& v = _vertexes[vId];
+                for (int j = 0; j < v.edges.size(); j++) {
+                    int vjId = v.edges[j];
+                    if (checkedFlags.find(vjId) == checkedFlags.end()) {
+                        delEdges++;
+                    }
                 }
+                checkedFlags[vId] = true;
             }
-            
         }
         
-        return can;
+        return delEdges == _totalEdgeNum;
     }
 private:
-    bool removeEdgesOfCities(Vertex& v, const unordered_map<int, bool>& cities) {
-        int delCount = 0;
-        int edgesSize = (int)v.edges.size();
-        for (auto cityIter = cities.begin(); cityIter != cities.end(); cityIter++) {
-            int city = cityIter->first;
-            auto iter = v.edges.find(city);
-            if (iter != v.edges.end()) {
-                delCount++;
-                if (delCount == edgesSize) {
-                    break;
-                }
-            }
-        }
-        
-        if (delCount == edgesSize) {
-            return false;
-        }
-        
-        return true;
-    }
     unordered_map<int, Vertex> _vertexes;
+    int _totalEdgeNum;
 };
 
 int main(int argc, const char * argv[]) {
@@ -97,12 +83,12 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i < k; i++) {
         int num = 0;
         cin >> num;
-        unordered_map<int, bool> vertexes;
+        vector<int> vertexes;
         
         for (int j = 0; j < num; j++) {
             int vId = 0;
             cin >> vId;
-            vertexes[vId] = true;
+            vertexes.push_back(vId);
         }
         
         if (g.canConquer(vertexes)) {
