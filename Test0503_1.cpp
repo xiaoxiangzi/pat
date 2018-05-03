@@ -39,11 +39,11 @@ public:
     }
     
     bool canConquer(const unordered_map<int, bool>& cities) {
-        if (cities.empty()) {
+        if (!cities.empty()) {
             return true;
         }
         
-        if (cities.size() == 1) {
+        if (_vertexes.size() == 1) {
             return true;
         }
         
