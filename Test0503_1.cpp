@@ -14,7 +14,6 @@ using namespace std;
 
 struct Vertex {
     int id;
-    bool hasEdges;
     unordered_map<int, bool> edges;
 };
 
@@ -25,7 +24,6 @@ public:
         for (int i = 1; i <= n; i++) {
             Vertex v;
             v.id = i;
-            v.hasEdges = false;
             _vertexes.insert(pair<int, Vertex>(i, v));
         }
         
@@ -37,8 +35,6 @@ public:
             auto& v2 = _vertexes.at(v2Id);
             v1.edges[v2Id] = true;
             v2.edges[v1Id] = true;
-            v1.hasEdges = true;
-            v2.hasEdges = true;
         }
     }
     
@@ -55,9 +51,7 @@ public:
         for (auto iter = _vertexes.begin(); iter != _vertexes.end(); iter++) {
             auto& v = iter->second;
             if (cities.find(v.id) == cities.end()) {
-                v.hasEdges = v.edges.size() > 0;
-                removeEdgesOfCities(v, cities);
-                if (v.hasEdges) {
+                if (removeEdgesOfCities(v, cities)) {
                     can = false;
                     break;
                 }
@@ -68,7 +62,7 @@ public:
         return can;
     }
 private:
-    void removeEdgesOfCities(Vertex& v, const unordered_map<int, bool>& cities) {
+    bool removeEdgesOfCities(Vertex& v, const unordered_map<int, bool>& cities) {
         int delCount = 0;
         int edgesSize = (int)v.edges.size();
         for (auto cityIter = cities.begin(); cityIter != cities.end(); cityIter++) {
@@ -83,8 +77,10 @@ private:
         }
         
         if (delCount == edgesSize) {
-            v.hasEdges = false;
+            return false;
         }
+        
+        return true;
     }
     unordered_map<int, Vertex> _vertexes;
 };
