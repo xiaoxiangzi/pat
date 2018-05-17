@@ -26,7 +26,12 @@
 		1D9A5ABF205793C600AAA147 /* pat */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = pat; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9A5AD0205794C900AAA147 /* 1045.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1045.txt; sourceTree = "<group>"; };
 		1D9A5AD3205798EC00AAA147 /* 1025.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1025.txt; sourceTree = "<group>"; };
+		1DBC4D4320AD9491003FDBF1 /* PTAContestCoupon.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PTAContestCoupon.txt; sourceTree = "<group>"; };
+		1DBC4D4620ADB4DD003FDBF1 /* PTAIntimacy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = PTAIntimacy.txt; sourceTree = "<group>"; };
+		1DBC4D4720ADB844003FDBF1 /* PTAIntimacy-1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "PTAIntimacy-1.txt"; sourceTree = "<group>"; };
 		1DCBAB0C205A47F900789D14 /* 1041.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1041.txt; sourceTree = "<group>"; };
+		1DFFE5C7209AE9CA00D58677 /* Test0503_2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test0503_2.txt; sourceTree = "<group>"; };
+		1DFFE5CA209AF02C00D58677 /* Test0503_1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test0503_1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,9 +72,14 @@
 		1D9A5ACF205794A000AAA147 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				1DBC4D4620ADB4DD003FDBF1 /* PTAIntimacy.txt */,
+				1DBC4D4720ADB844003FDBF1 /* PTAIntimacy-1.txt */,
+				1DBC4D4320AD9491003FDBF1 /* PTAContestCoupon.txt */,
 				1DCBAB0C205A47F900789D14 /* 1041.txt */,
 				1D7B70C1207F349300F64839 /* HamiltonCircuit.txt */,
 				1D7B70C4207F453D00F64839 /* Rescue007.txt */,
+				1DFFE5C7209AE9CA00D58677 /* Test0503_2.txt */,
+				1DFFE5CA209AF02C00D58677 /* Test0503_1.txt */,
 				1D517C61206CCA820039BD40 /* Test0329_2.txt */,
 				1D517C5E206CC04B0039BD40 /* Test0329.txt */,
 				1D9A5AD3205798EC00AAA147 /* 1025.txt */,

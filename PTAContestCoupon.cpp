@@ -40,7 +40,7 @@ bool compareScore(const Student& a, const Student& b) {
 }
 
 int main(int argc, const char * argv[]) {
-    freopen("PTAContestCoupon.txt", "r", stdin);
+//    freopen("PTAContestCoupon.txt", "r", stdin);
     
     int n, g, k;
     cin >> n >> g >> k;
