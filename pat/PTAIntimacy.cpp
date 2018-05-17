@@ -15,32 +15,15 @@
 #include <sstream>
 using namespace std;
 
-typedef enum {
-    MALE,
-    FEMALE,
-} Sex;
-
-struct Person {
-    int id;
-    Sex sex;
-    unordered_map<int, float> intimacyMap;
-};
-
 struct Intimacy {
-    const Person* p;
+    string id;
     float intimacy;
 };
 
-void readPersonInfo(int& id, Sex& sex) {
-    string s;
-    cin >> s;
-    if (s[0] == '-') {
-        sex = FEMALE;
-    } else {
-        sex = MALE;
-    }
-    id = abs(atoi(s.c_str()));
-}
+struct Person {
+    string id;
+    unordered_map<string, Intimacy> intimacyMap;
+};
 
 void addIncimacyInList(vector<Person*>& persons) {
     int k = (int) persons.size();
@@ -54,9 +37,11 @@ void addIncimacyInList(vector<Person*>& persons) {
             Person* b = persons[j];
             auto iter = b->intimacyMap.find(a->id);
             if (iter != b->intimacyMap.end()) {
-                iter->second += intimacy;
+                iter->second.intimacy += intimacy;
             } else {
-                b->intimacyMap.insert(make_pair(a->id, intimacy));
+                Intimacy item;
+                item.id = a->id;
+                b->intimacyMap.insert(make_pair(a->id, item));
             }
         }
     }
@@ -64,35 +49,22 @@ void addIncimacyInList(vector<Person*>& persons) {
 
 bool compareIntimacy(Intimacy& a, Intimacy& b) {
     if (abs(a.intimacy - b.intimacy) < 0.0000001) {
-        return a.p->id < b.p->id;
+        return abs(atoi(a.id.c_str())) < abs(atoi(b.id.c_str()));
     }
     return a.intimacy > b.intimacy;
 }
 
-string getPersonStr(const Person* p) {
-    stringstream ss;
-    if (p->sex == FEMALE) {
-        ss << "-";
-    }
-    ss << p->id;
-    return ss.str();
-}
-
 void printIntimacyList(const Person& person, const vector<Intimacy>& intimacyList) {
-    string personStr = getPersonStr(&person);
     for (int i = 0; i < intimacyList.size(); i++) {
-        cout << personStr << " " << getPersonStr(intimacyList[i].p) << endl;
+        cout << person.id << " " << intimacyList[i].id << endl;
     }
 }
 
-vector<Intimacy> findIntimacyList(int id, const unordered_map<int, Person>& personsMap, int checkId, bool& hasCheckId) {
+vector<Intimacy> findIntimacyList(string id, const unordered_map<string, Person>& personsMap, string checkId, bool& hasCheckId) {
     vector<Intimacy> result;
     auto& person = personsMap.at(id);
     for (auto iter = person.intimacyMap.begin(); iter != person.intimacyMap.end(); iter++) {
-        Intimacy i;
-        i.p = &personsMap.at(iter->first);
-        i.intimacy = iter->second;
-        result.push_back(i);
+        result.push_back(iter->second);
     }
     sort(result.begin(), result.end(), compareIntimacy);
     float maxIntimacy = -1;
@@ -105,7 +77,7 @@ vector<Intimacy> findIntimacyList(int id, const unordered_map<int, Person>& pers
             indexToDel = i;
             break;
         }
-        if (intimacy.p->id == checkId) {
+        if (intimacy.id == checkId) {
             hasCheckId = true;
         }
     }
@@ -118,19 +90,18 @@ vector<Intimacy> findIntimacyList(int id, const unordered_map<int, Person>& pers
 }
 
 int main(int argc, const char * argv[]) {
-//    freopen("PTAIntimacy-1.txt", "r", stdin);
+    freopen("PTAIntimacy.txt", "r", stdin);
     int n = 0;
     int m = 0;
     cin >> n >> m;
-    unordered_map<int, Person> persons;
+    unordered_map<string, Person> persons;
     for (int i = 0; i < m; i++) {
         int k = 0;
         cin >> k;
         vector<Person*> personList;
         for (int j = 0; j < k; j++) {
-            int id;
-            Sex sex;
-            readPersonInfo(id, sex);
+            string id;
+            cin >> id;
             auto iter = persons.find(id);
             Person* p = nullptr;
             if (iter != persons.end()) {
@@ -138,7 +109,6 @@ int main(int argc, const char * argv[]) {
             } else {
                 Person person;
                 person.id = id;
-                person.sex = sex;
                 persons.insert(make_pair(id, person));
                 p = &persons.at(id);
             }
@@ -147,11 +117,9 @@ int main(int argc, const char * argv[]) {
         addIncimacyInList(personList);
     }
     
-    int aId = 0;
-    int bId = 0;
+    string aId;
+    string bId;
     cin >> aId >> bId;
-    aId = abs(aId);
-    bId = abs(bId);
     
     bool hasB = false;
     bool hasA = false;
@@ -159,7 +127,7 @@ int main(int argc, const char * argv[]) {
     vector<Intimacy> bList = findIntimacyList(bId, persons, aId, hasA);
     
     if (hasB && hasA) {
-        cout << getPersonStr(&persons.at(aId)) << " " << getPersonStr(&persons.at(bId)) << endl;
+        cout << aId << " " << bId << endl;
     } else {
         printIntimacyList(persons.at(aId), aList);
         printIntimacyList(persons.at(bId), bList);
