@@ -49,10 +49,10 @@ int main(int argc, const char * argv[]) {
     for (int i = 0; i < n; i++) {
         Student s;
         cin >> s.email >> s.score;
-        if (s.score >= MIN_SCORE) {
+//        if (s.score >= MIN_SCORE) {
             students.push_back(s);
             totalCoupon += calcCoupon(s.score, g);
-        }
+//        }
     }
     
     sort(students.begin(), students.end(), compareScore);
