@@ -11,11 +11,12 @@
 #include <deque>
 #include <vector>
 #include <algorithm>
+#include <math.h>
 using namespace std;
 
-static const int TARGET_NUM = 24;
+static const double TARGET_NUM = 24;
 
-int calc(int a, int b, char op, bool& valid) {
+double calc(double a, double b, char op, bool& valid) {
     if (op == '+') {
         return a + b;
     } else if (op == '-') {
@@ -28,10 +29,6 @@ int calc(int a, int b, char op, bool& valid) {
             return -1;
         }
         
-        if (a % b > 0) {
-            valid = false;
-            return -1;
-        }
         return a / b;
     }
 }
@@ -42,10 +39,10 @@ string formatOutput(const string& format, int a, int b, int c, int d, int op1, i
     return string(buf);
 }
 
-int calcForm1(int a, int b, int c, int d, int op1, int op2, int op3) {
+double calcForm1(int a, int b, int c, int d, int op1, int op2, int op3) {
     // ((a op1 b) op2 c) op3 d
     bool valid = true;
-    int tmp = calc(a, b, op1, valid);
+    double tmp = calc(a, b, op1, valid);
     if (!valid) {
         return -1;
     }
@@ -63,10 +60,10 @@ int calcForm1(int a, int b, int c, int d, int op1, int op2, int op3) {
     return tmp;
 }
 
-int calcForm2(int a, int b, int c, int d, int op1, int op2, int op3) {
+double calcForm2(int a, int b, int c, int d, int op1, int op2, int op3) {
     // (a op1 (b op2 c)) op3 d
     bool valid = true;
-    int tmp = calc(b, c, op2, valid);
+    double tmp = calc(b, c, op2, valid);
     if (!valid) {
         return -1;
     }
@@ -84,20 +81,20 @@ int calcForm2(int a, int b, int c, int d, int op1, int op2, int op3) {
     return tmp;
 }
 
-int calcForm3(int a, int b, int c, int d, int op1, int op2, int op3) {
+double calcForm3(int a, int b, int c, int d, int op1, int op2, int op3) {
     // (a op1 b) op2 (c op3 d)
     bool valid = true;
-    int tmp1 = calc(a, b, op1, valid);
+    double tmp1 = calc(a, b, op1, valid);
     if (!valid) {
         return -1;
     }
     
-    int tmp2 = calc(c, d, op2, valid);
+    double tmp2 = calc(c, d, op3, valid);
     if (!valid) {
         return -1;
     }
     
-    int tmp = calc(tmp1, tmp2, op3, valid);
+    double tmp = calc(tmp1, tmp2, op2, valid);
     if (!valid) {
         return -1;
     }
@@ -105,10 +102,10 @@ int calcForm3(int a, int b, int c, int d, int op1, int op2, int op3) {
     return tmp;
 }
 
-int calcForm4(int a, int b, int c, int d, int op1, int op2, int op3) {
+double calcForm4(int a, int b, int c, int d, int op1, int op2, int op3) {
     // a op1 ((b op2 c) op3 d)
     bool valid = true;
-    int tmp = calc(b, c, op2, valid);
+    double tmp = calc(b, c, op2, valid);
     if (!valid) {
         return -1;
     }
@@ -126,10 +123,10 @@ int calcForm4(int a, int b, int c, int d, int op1, int op2, int op3) {
     return tmp;
 }
 
-int calcForm5(int a, int b, int c, int d, int op1, int op2, int op3) {
+double calcForm5(int a, int b, int c, int d, int op1, int op2, int op3) {
     // a op1 (b op2 (c op3 d))
     bool valid = true;
-    int tmp = calc(c, d, op3, valid);
+    double tmp = calc(c, d, op3, valid);
     if (!valid) {
         return -1;
     }
@@ -147,6 +144,10 @@ int calcForm5(int a, int b, int c, int d, int op1, int op2, int op3) {
     return tmp;
 }
 
+bool isTargetNum(double value) {
+    return abs(value - TARGET_NUM) < 0.0000001;
+}
+
 string calc24(int a, int b, int c, int d, const vector<char>& ops) {
     
     for (int i = 0; i < ops.size(); i++) {
@@ -154,34 +155,34 @@ string calc24(int a, int b, int c, int d, const vector<char>& ops) {
         for (int j = 0; j < ops.size(); j++) {
             char op2 = ops[j];
             for (int k = 0; k < ops.size(); k++) {
-                char op3 = ops[j];
+                char op3 = ops[k];
                 // ((a op1 b) op2 c) op3 d
-                int result = calcForm1(a, b, c, d, op1, op2, op3);
+                double result = calcForm1(a, b, c, d, op1, op2, op3);
                 if (result == TARGET_NUM) {
                     return formatOutput("((%d%c%d)%c%d)%c%d", a, b, c, d, op1, op2, op3);
                 }
                 
                 // (a op1 (b op2 c)) op3 d
                 result = calcForm2(a, b, c, d, op1, op2, op3);
-                if (result == TARGET_NUM) {
+                if (isTargetNum(result)) {
                     return formatOutput("(%d%c(%d%c%d))%c%d", a, b, c, d, op1, op2, op3);
                 }
                 
                 // (a op1 b) op2 (c op3 d)
                 result = calcForm3(a, b, c, d, op1, op2, op3);
-                if (result == TARGET_NUM) {
+                if (isTargetNum(result)) {
                     return formatOutput("(%d%c%d)%c(%d%c%d)", a, b, c, d, op1, op2, op3);
                 }
                 
                 // a op1 ((b op2 c) op3 d)
                 result = calcForm4(a, b, c, d, op1, op2, op3);
-                if (result == TARGET_NUM) {
+                if (isTargetNum(result)) {
                     return formatOutput("%d%c((%d%c%d)%c%d)", a, b, c, d, op1, op2, op3);
                 }
-                
+
                 // a op1 (b op2 (c op3 d))
                 result = calcForm5(a, b, c, d, op1, op2, op3);
-                if (result == TARGET_NUM) {
+                if (isTargetNum(result)) {
                     return formatOutput("%d%c(%d%c(%d%c%d))", a, b, c, d, op1, op2, op3);
                 }
             }
@@ -192,7 +193,7 @@ string calc24(int a, int b, int c, int d, const vector<char>& ops) {
 }
 
 int main(int argc, const char * argv[]) {
-//    freopen("Poker24.txt", "r", stdin);
+    freopen("Poker24.txt", "r", stdin);
     vector<int> nums;
     vector<char> ops = {'+', '-', '*', '/'};
     int totalNum = 4;
@@ -237,13 +238,13 @@ int main(int argc, const char * argv[]) {
         }
         
         if (hasCalced24) {
-            cout << result;
+            cout << result << endl;
             break;
         }
     }
     
     if (!hasCalced24) {
-        cout << -1;
+        cout << -1 << endl;
     }
     
     return 0;
